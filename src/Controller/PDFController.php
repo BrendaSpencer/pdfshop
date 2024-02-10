@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controller;
 
@@ -10,23 +10,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PDFController extends AbstractController
 {
-    #[Route('/')]
-    public function homepage():Response
+    #[Route('/', name: 'app_homepage')]
+    public function homepage(): Response
     {
         return $this->render('pdf/homepage.html.twig', [
             'title' => 'PDF Shop',
         ]);
     }
 
-    #[Route('/browse/{slug}')]
-    public function browse(string $slug = null):Response
+    #[Route('/browse/{slug}', name: 'app_browse')]
+    public function browse(string $slug = null): Response
     {
-        if ($slug){
-            $title = u(str_replace('-', ' ', $slug))->title(true);
-        }else {
-            $title = 'All PDFs';
-        }
-        return new Response($title);
+        $genre = $slug ? u(str_replace('-', ' ', $slug))->title(true) : null;
 
+        return $this->render('pdf/browse.html.twig', [
+            'genre' => $genre,
+        ]);
     }
 }
